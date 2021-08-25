@@ -34,6 +34,9 @@ export const Label = styled.label`
   text-align: left;
   margin-right: 40px;
 `
+export const Sup = styled.sup`
+  color: #FF0000;
+`
 
 export const InputMaior = styled.input`
   border: 1px solid #ddd;
@@ -90,6 +93,12 @@ export const Select = styled.select`
 export const CheckBox = styled.input`
   border-radius: .3rem;
   margin-left: 5px;
+`
+
+export const P = styled.p`
+  color: #FF0000;
+  font-size: 0.7rem;
+  margin-top: 30px;
 `
 
 export const Button = styled.button`

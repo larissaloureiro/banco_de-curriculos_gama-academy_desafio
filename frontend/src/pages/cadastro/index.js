@@ -9,7 +9,7 @@ function Cadastro(props) {
   const [cargo, setCargo] = useState("");
   const [nascimento, setNascimento] = useState("");
   const [estadoCivil, setEstadoCivil] = useState("");
-  const [sexo, setSexo] = useState("");
+  const [genero, setGenero] = useState("");
 
   const [endLogradouro, setEndLogradouro] = useState();
   const [endNumero, setEndNumero] = useState("");
@@ -32,22 +32,22 @@ function Cadastro(props) {
 
   const [erro, setErro] = useState(false);
 
-  function buscaCep(e) {
-    const cep = e.target.value;
+  async function buscaCep(e) {
+    let cep = e.target.value;
+    cep = cep.replace(/\D+/, '');
+
     setEndCep(cep);
-
-    axios.get(`https://viacep.com.br/ws/${cep}/json/`)
-      .then(res => {
-        const dados = res.data;
-        setEndLogradouro(dados.logradouro);
-        setEndBairro(dados.bairro);
-        setEndCidade(dados.localidade);
-        setEndEstado(dados.uf);
-      })
-      .catch(err => {
-        setErro(true);
-      });
-
+    try {
+      const resp = await axios.get(`https://viacep.com.br/ws/${endCep}/json/`);
+      const dados = resp.data;
+      setEndLogradouro(dados.logradouro);
+      setEndBairro(dados.bairro);
+      setEndCidade(dados.localidade);
+      setEndEstado(dados.uf);
+    } catch (err) {
+      alert('Ocorreu um erro ao consultar o CEP. Por favor tente novamente.');
+      setEndCep('');
+    }
   }
 
   function handleCadastro() {
@@ -56,7 +56,7 @@ function Cadastro(props) {
       cargo,
       nascimento,
       estadoCivil,
-      sexo,
+      genero,
     
       endLogradouro, 
       endNumero, 
@@ -94,17 +94,17 @@ function Cadastro(props) {
           <S.H1>DADOS PESSOAIS</S.H1>
           <hr/>
           <S.Content>
-            <S.Label>Nome Completo:<br/>
+            <S.Label>Nome Completo: <S.Sup>*</S.Sup><br/>
               <S.InputMaior type="text" placeholder="Nome Completo" required
                 value={nome} onChange={(e) => setNome(e.target.value)} />
             </S.Label>
 
-            <S.Label>Cargo Pretendido:<br/>
+            <S.Label>Cargo Pretendido: <S.Sup>*</S.Sup><br/>
               <S.InputMaior type="text" placeholder="Cargo" required
               value={cargo} onChange={(e) => setCargo(e.target.value)} />
             </S.Label>
 
-            <S.Label>Data de Nascimento:<br/>
+            <S.Label>Data de Nascimento: <S.Sup>*</S.Sup><br/>
               <S.Input type="date" placeholder="dd/mm/aaaa" required
                 value={nascimento} onChange={(e) => setNascimento(e.target.value)} />
             </S.Label>
@@ -120,9 +120,13 @@ function Cadastro(props) {
             </S.Label>
 
             <S.Label>Sexo:<br/>
-              <S.Select value={sexo} onChange={(e) => setSexo(e.target.value)}>
-                <option value="Masculino">Masculino</option>
-                <option value="Feminino">Feminino</option>
+              <S.Select value={genero} onChange={(e) => setGenero(e.target.value)}>
+                <option value="homemcis">Homem Cis</option>
+                <option value="homemtrans">Homem Trans</option>
+                <option value="mulhercis">Mulher Cis</option>
+                <option value="mulhertrans">Homem Trans</option>
+                <option value="naobinario">Não-binário</option>
+                <option value="naoresponder">Prefiro não responder</option>
               </S.Select>
             </S.Label>
           </S.Content>
@@ -130,9 +134,9 @@ function Cadastro(props) {
           <S.H1>ENDEREÇO</S.H1>
           <hr/>
           <S.Content>
-            <S.Label>CEP:<br/>
-              <S.Input type="text" placeholder="Nome Completo" required
-                value={endCep} onChange={buscaCep} />
+            <S.Label>CEP: <S.Sup>*</S.Sup><br/>
+              <S.Input type="text" placeholder="12345678" required
+                value={endCep} onChange={(e) => setEndCep(e.target.value)} onBlur={(e) => buscaCep(e)} />
             </S.Label>
 
             <S.Label>Logradouro:<br/>
@@ -140,7 +144,7 @@ function Cadastro(props) {
               value={endLogradouro} />
             </S.Label>
 
-            <S.Label>Número:<br/>
+            <S.Label>Número: <S.Sup>*</S.Sup><br/>
               <S.Input type="text" placeholder="Nº" required
                 value={endNumero} onChange={(e) => setEndNumero(e.target.value)} />
             </S.Label>
@@ -170,7 +174,7 @@ function Cadastro(props) {
           <S.H1>CONTATOS</S.H1>
           <hr/>
           <S.Content>
-          <S.Label>Celular:<br/>
+          <S.Label>Celular: <S.Sup>*</S.Sup><br/>
               <S.Input type="text" placeholder="11 99999-9999" required
                 value={contatoCelular} onChange={(e) => setContatoCelular(e.target.value)} />
             </S.Label>
@@ -180,17 +184,17 @@ function Cadastro(props) {
                 value={contatoFixo} onChange={(e) => setContatoFixo(e.target.value)} />
             </S.Label>
 
-            <S.Label>Telefone Contato:<br/>
+            <S.Label>Telefone - Contato:<br/>
               <S.Input type="text" placeholder="11 5555-5555"
               value={contatoTel} onChange={(e) => setContatoTel(e.target.value)} />
             </S.Label>
 
-            <S.Label>Contato:<br/>
+            <S.Label>Nome - Contato:<br/>
               <S.Input type="text" placeholder="Nome do Contato"
                 value={contatoNome} onChange={(e) => setContatoNome(e.target.value)} />
             </S.Label>
 
-            <S.Label>E-mail:<br/>
+            <S.Label>E-mail: <S.Sup>*</S.Sup><br/>
               <S.InputMaior type="email" placeholder="email@email.com" required
                 value={email} onChange={(e) => setEmail(e.target.value)} />
             </S.Label>
@@ -204,7 +208,7 @@ function Cadastro(props) {
                 value={identidade} onChange={(e) => setIdentidade(e.target.value)} />
             </S.Label>
 
-            <S.Label>CPF:<br/>
+            <S.Label>CPF: <S.Sup>*</S.Sup><br/>
               <S.Input type="text" placeholder="123.456.789-09" required
               value={cpf} onChange={(e) => setCpf(e.target.value)} />
             </S.Label>
@@ -219,8 +223,8 @@ function Cadastro(props) {
                 value={possuiHabilitacao} onChange={(e) => setPossuiHabilitacao(e.target.value)} />
             </S.Label>
           </S.Content>
-
-
+          
+          <S.P>Os campos com * são de preenchimento obrigatório.</S.P>
 
           <S.Button>Cadastrar</S.Button>
         </form>
