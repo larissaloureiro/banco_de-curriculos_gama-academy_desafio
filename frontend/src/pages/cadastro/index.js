@@ -27,8 +27,8 @@ function Cadastro(props) {
 
   const [identidade, setIdentidade] = useState("");
   const [cpf, setCpf] = useState("");
-  const [possuiVeiculo, setPossuiVeiculo] = useState("");
-  const [possuiHabilitacao, setPossuiHabilitacao] = useState("");
+  const [possuiVeiculo, setPossuiVeiculo] = useState(false);
+  const [possuiHabilitacao, setPossuiHabilitacao] = useState(false);
 
   const [erro, setErro] = useState(false);
 
@@ -39,6 +39,10 @@ function Cadastro(props) {
     setEndCep(cep);
     try {
       const resp = await axios.get(`https://viacep.com.br/ws/${endCep}/json/`);
+      console.log(resp);
+      if (resp.data.erro) {
+        throw new Error('Ocorreu um erro ao consultar o CEP.');
+      }
       const dados = resp.data;
       setEndLogradouro(dados.logradouro);
       setEndBairro(dados.bairro);
@@ -50,7 +54,14 @@ function Cadastro(props) {
     }
   }
 
-  function handleCadastro() {
+  function formataCpf(e) {
+    let cpf = e.target.value;
+    cpf = cpf.replace(/\D+/, '');
+    setCpf(cpf);
+  }
+
+  function handleCadastro(event) {
+    event.preventDefault();
     let dadosFormulario = {
       nome,
       cargo,
@@ -77,7 +88,7 @@ function Cadastro(props) {
       possuiVeiculo,
       possuiHabilitacao,
     }
-    axios.post('url', dadosFormulario)
+    axios.post('http://localhost:5000/users', dadosFormulario)
       .then(() => {
         setErro(false);
         history.push('/confirmacao');
@@ -119,7 +130,7 @@ function Cadastro(props) {
               </S.Select>
             </S.Label>
 
-            <S.Label>Sexo:<br/>
+            <S.Label>Gênero:<br/>
               <S.Select value={genero} onChange={(e) => setGenero(e.target.value)}>
                 <option value="homemcis">Homem Cis</option>
                 <option value="homemtrans">Homem Trans</option>
@@ -135,7 +146,7 @@ function Cadastro(props) {
           <hr/>
           <S.Content>
             <S.Label>CEP: <S.Sup>*</S.Sup><br/>
-              <S.Input type="text" placeholder="12345678" required
+              <S.Input type="text" placeholder="Apenas números." required
                 value={endCep} onChange={(e) => setEndCep(e.target.value)} onBlur={(e) => buscaCep(e)} />
             </S.Label>
 
@@ -209,8 +220,8 @@ function Cadastro(props) {
             </S.Label>
 
             <S.Label>CPF: <S.Sup>*</S.Sup><br/>
-              <S.Input type="text" placeholder="123.456.789-09" required
-              value={cpf} onChange={(e) => setCpf(e.target.value)} />
+              <S.Input type="text" placeholder="Apenas números." required
+              value={cpf} onChange={(e) => setCpf(e.target.value)} onBlur={(e) => formataCpf(e)} />
             </S.Label>
 
             <S.Label>Possui Veículo?

@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import * as S from './styled';
-import { useHistory } from 'react-router-dom';
 
 function Confirmacao(props) {
-  const history = useHistory();
   return(
     <S.ConfirmacaoContainer>
       <S.Content>
@@ -14,6 +11,5 @@ function Confirmacao(props) {
     </S.ConfirmacaoContainer>
   )
 }
-
 
 export default Confirmacao;
