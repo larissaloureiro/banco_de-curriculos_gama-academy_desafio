@@ -42,4 +42,4 @@ app.use((err, req, res, next) => {
   logger.error(`${req.method} ${req.baseUrl} - ${error}`);
 });
 
-app.listen(5000, () => console.log('API Started at port 5000!'));
+app.listen(process.env.PORT, () => console.log('API Started!'));

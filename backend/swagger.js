@@ -13,8 +13,8 @@ export const swaggerDocument =
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "api.bancodecurriculos.com.br",
-  "basePath": "/banco-de-curriculos-api",
+  "host": "https://bancodecurriculos-back.herokuapp.com",
+  "basePath": "/",
   "tags": [
     {
       "name": "users"

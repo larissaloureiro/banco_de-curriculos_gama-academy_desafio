@@ -122,6 +122,7 @@ function Cadastro(props) {
 
             <S.Label>Estado Civil:<br/>
               <S.Select value={estadoCivil} onChange={(e) => setEstadoCivil(e.target.value)}>
+                <option value="">---</option>
                 <option value="solteiro">Solteiro(a)</option>
                 <option value="casado">Casado(a)</option>
                 <option value="divorciado">Divorciado(a)</option>
@@ -132,6 +133,7 @@ function Cadastro(props) {
 
             <S.Label>Gênero:<br/>
               <S.Select value={genero} onChange={(e) => setGenero(e.target.value)}>
+                <option value="">---</option>
                 <option value="homemcis">Homem Cis</option>
                 <option value="homemtrans">Homem Trans</option>
                 <option value="mulhercis">Mulher Cis</option>

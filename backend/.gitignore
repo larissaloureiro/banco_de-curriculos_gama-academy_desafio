@@ -74,3 +74,4 @@ typings/
 
 # FuseBox cache
 .fusebox/
+configuracao_banco_de_dados_postgresql.txt
