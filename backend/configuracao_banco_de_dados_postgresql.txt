@@ -1,0 +1,25 @@
+======================= CRIAR TABELA users =======================
+CREATE TABLE users (
+  user_id SERIAL PRIMARY KEY,
+  nome VARCHAR NOT NULL,
+  cargo VARCHAR NOT NULL,
+  nascimento VARCHAR NOT NULL,
+  estado_civil VARCHAR,
+  genero VARCHAR,
+  end_logradouro VARCHAR NOT NULL,
+  end_numero VARCHAR NOT NULL,
+  end_complemento VARCHAR,
+  end_bairro VARCHAR NOT NULL,
+  end_cidade VARCHAR NOT NULL,
+  end_estado VARCHAR NOT NULL,
+  end_cep VARCHAR NOT NULL,
+  contato_fixo VARCHAR,
+  contato_celular VARCHAR NOT NULL,
+  contato_tel VARCHAR,
+  contato_nome VARCHAR,
+  email VARCHAR NOT NULL,
+  identidade VARCHAR,
+  cpf VARCHAR NOT NULL,
+  possui_veiculo BOOLEAN,
+  possui_habilitacao BOOLEAN
+)
